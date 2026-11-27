@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101210">
+<title>Music Age — 음악 취향으로 나이 맞히기</title>
+<style>
+:root{color-scheme:dark;--bg:#0d100e;--panel:#171c18;--panel2:#202720;--green:#1ed760;--muted:#a4ada6;--line:#303a32}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#183522 0,transparent 35%),var(--bg);color:#f5f7f5;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Noto Sans KR",sans-serif}
+.wrap{width:min(920px,calc(100% - 32px));margin:auto;padding:34px 0 60px}
+nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:44px}.brand{display:flex;gap:10px;align-items:center;font-weight:850;letter-spacing:.08em}.logo{width:34px;height:34px;border-radius:50%;background:var(--green);color:#071009;display:grid;place-items:center;font-size:20px}.pill{font-size:11px;color:var(--green);border:1px solid #28683d;border-radius:30px;padding:7px 11px;letter-spacing:.1em}
+.hero{padding:34px 0 28px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:.18em}.hero h1{font-size:clamp(42px,8vw,76px);line-height:1.02;letter-spacing:-.06em;margin:14px 0}.hero h1 span{color:var(--green)}.hero p{color:var(--muted);line-height:1.7;max-width:590px}
+.panel{background:linear-gradient(145deg,#1a211c,#131714);border:1px solid var(--line);border-radius:24px;padding:clamp(20px,4vw,32px);box-shadow:0 24px 80px #0005}
+.tabs{display:flex;gap:8px;margin:22px 0}.tab{border:1px solid var(--line);background:#111612;color:var(--muted);border-radius:12px;padding:10px 14px;cursor:pointer}.tab.active{background:#1b3b25;border-color:#2d7a43;color:#fff}
+label{display:block;font-weight:700;margin:18px 0 9px}.hint{color:var(--muted);font-size:13px;line-height:1.6;margin:7px 0 12px}
+textarea,input{width:100%;background:#0c100d;border:1px solid #354038;border-radius:13px;padding:14px;color:#f5f7f5;font:inherit;outline:none}textarea{min-height:190px;resize:vertical;line-height:1.65}textarea:focus,input:focus{border-color:var(--green)}
+button.primary{width:100%;margin-top:20px;background:var(--green);color:#071009;border:0;border-radius:14px;padding:16px;font-size:16px;font-weight:850;cursor:pointer;transition:.15s}button.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button:disabled{opacity:.45;cursor:not-allowed}.result{display:none;margin-top:22px;background:#112719;border:1px solid #28683d;border-radius:18px;padding:24px}.result.show{display:block}.result small{color:#a8c9b0;letter-spacing:.15em;font-weight:800}.age{font-size:clamp(56px,12vw,88px);font-weight:900;color:var(--green);letter-spacing:-.07em;margin:8px 0}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:18px 0}.stat{background:#0d1b11;border-radius:12px;padding:14px}.stat span{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.stat strong{font-size:19px}.note{font-size:12px;color:#a9b4ab;line-height:1.6}.actions{display:flex;gap:9px;flex-wrap:wrap}.secondary{border:1px solid #42734e;background:#15251a;color:#e8f4eb;padding:10px 14px;border-radius:11px;cursor:pointer}
+footer{margin-top:26px;color:#7f8b82;font-size:12px;line-height:1.7;text-align:center}
+.error{color:#ffb4a9;font-size:13px;margin-top:10px;min-height:18px}
+@media(max-width:560px){.wrap{padding-top:22px}.hero{padding-top:20px}.stats{grid-template-columns:1fr 1fr}.tabs{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="brand"><div class="logo">♫</div><span>MUSIC AGE</span></div><div class="pill">PLAY YOUR YEARS</div></nav>
+<header class="hero">
+<div class="eyebrow">YOUR PLAYLIST, YOUR VIBE</div>
+<h1>How old is<br><span>your music taste?</span></h1>
+<p>좋아하는 팝송을 입력하면 발매 연도를 바탕으로 음악 취향 나이를 재미로 추측해 줘요. 실제 나이를 알아내는 테스트는 아니에요.</p>
+</header>
+<main class="panel">
+<div class="eyebrow">01 / ADD YOUR MUSIC</div>
+<div class="tabs" role="tablist">
+<button class="tab active" id="manualTab" type="button">곡 직접 입력</button>
+<button class="tab" id="linkTab" type="button">Spotify 링크</button>
+</div>
+<section id="manual">
+<label for="tracks">플레이리스트</label>
+<p class="hint">한 줄에 한 곡씩 입력해 주세요. 형식: <b>노래 제목 - 가수 - 발매 연도</b><br>예: Blinding Lights - The Weeknd - 2019</p>
+<textarea id="tracks" spellcheck="false" placeholder="Blinding Lights - The Weeknd - 2019&#10;Shape of You - Ed Sheeran - 2017&#10;좋아하는 노래를 더 추가해 보세요!"></textarea>
+</section>
+<section id="spotify" hidden>
+<label for="spotifyUrl">Spotify 플레이리스트 URL</label>
+<input id="spotifyUrl" type="url" placeholder="https://open.spotify.com/playlist/...">
+<p class="hint">현재 공개 버전은 Spotify 계정/API 연결 기능을 포함하지 않아요. 링크를 입력해도 곡 목록을 자동으로 가져오지는 않으며, Spotify 연동을 위해서는 개발자 앱 등록과 인증 설정이 추가로 필요합니다.</p>
+</section>
+<div class="error" id="error" aria-live="polite"></div>
+<button class="primary" id="analyze">✦ 내 음악 나이 분석하기</button>
+<section class="result" id="result" aria-live="polite">
+<small>YOUR ESTIMATED MUSIC AGE</small>
+<div class="age" id="age">—</div>
+<p id="description"></p>
+<div class="stats"><div class="stat"><span>분석한 곡</span><strong id="count">—</strong></div><div class="stat"><span>평균 발매 연도</span><strong id="year">—</strong></div></div>
+<p class="note">이 결과는 입력한 곡들의 발매 연도를 이용한 놀이용 추정치예요. 음악 취향만으로 실제 나이를 정확히 알아낼 수는 없습니다.</p>
+<div class="actions"><button class="secondary" id="copy">결과 복사</button><button class="secondary" id="reset">다시 분석하기</button></div>
+</section>
+</main>
+<footer>MADE FOR MUSIC LOVERS · MUSIC AGE<br>Spotify는 이 사이트와 제휴하거나 후원하지 않습니다.</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const manualTab=$('manualTab'),linkTab=$('linkTab'),manual=$('manual'),spotify=$('spotify');
+function setTab(which){const isManual=which==='manual';manual.hidden=!isManual;spotify.hidden=isManual;manualTab.classList.toggle('active',isManual);linkTab.classList.toggle('active',!isManual);$('error').textContent='';}
+manualTab.addEventListener('click',()=>setTab('manual'));
+linkTab.addEventListener('click',()=>setTab('spotify'));
+let latest='';
+$('analyze').addEventListener('click',()=>{
+  $('error').textContent='';
+  if(manual.hidden){$('error').textContent='Spotify 자동 연동은 아직 준비 중이에요. 곡 직접 입력 탭을 이용해 주세요.';return;}
+  const lines=$('tracks').value.split(/\n/).map(s=>s.trim()).filter(Boolean);
+  const years=[];
+  for(const line of lines){const match=line.match(/\b(19\d{2}|20[0-2]\d)\b/);if(match)years.push(Number(match[0]));}
+  if(years.length<2){$('error').textContent='발매 연도가 포함된 곡을 최소 2개 입력해 주세요.';$('result').classList.remove('show');return;}
+  const avg=years.reduce((a,b)=>a+b,0)/years.length;
+  // Heuristic for entertainment only; intentionally not a real age estimator.
+  const estimated=Math.max(13,Math.min(65,Math.round(2026-avg+18)));
+  const oldest=Math.min(...years),newest=Math.max(...years);
+  $('age').textContent=estimated+'세';
+  $('count').textContent=years.length+'곡';
+  $('year').textContent=Math.round(avg)+'년';
+  $('description').textContent=`${oldest}년부터 ${newest}년까지의 곡을 듣고 있네요. 여러 시기의 팝 음악을 즐기는 플레이리스트예요!`;
+  latest=`내 음악 취향 나이는 ${estimated}세! 평균 발매 연도는 ${Math.round(avg)}년 🎧`;
+  $('result').classList.add('show');
+  $('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(latest);$('copy').textContent='복사 완료!';}catch(e){$('copy').textContent='복사할 수 없어요';}});
+$('reset').addEventListener('click',()=>{$('result').classList.remove('show');$('error').textContent='';$('tracks').focus();});
+</script>
+</body>
+</html>
